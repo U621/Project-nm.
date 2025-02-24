@@ -129,4 +129,176 @@ for(let i = 0; i < navigationLinks.length; i++) {
             }
         }
     });
-}            
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadData(); 
+    loadTitle(); 
+});
+
+function updateTitle() {
+    const title = document.getElementById("schedule-title").value.trim();
+    document.getElementById("schedule-display-title").textContent = title || "Your Schedule";
+    localStorage.setItem("scheduleTitle", title);
+}
+
+function loadTitle() {
+    const savedTitle = localStorage.getItem("scheduleTitle") || "Your Schedule";
+    document.getElementById("schedule-title").value = savedTitle;
+    document.getElementById("schedule-display-title").textContent = savedTitle;
+}
+
+function addItem() {
+    const subject = document.getElementById("new-subject").value.trim();
+    const teacher = document.getElementById("new-teacher").value.trim();
+    const classInfo = document.getElementById("new-class").value.trim();
+    const credit = parseFloat(document.getElementById("new-credit").value.trim());
+    const selectedTables = Array.from(document.querySelectorAll('input[name="table-selection"]:checked'))
+        .map(input => input.value);
+
+    if (selectedTables.length === 0) {
+        alert("Please select at least one table before adding a course!");
+        return;
+    }
+
+    if (subject && teacher && classInfo && !isNaN(credit) && credit > 0) {
+        let courses = JSON.parse(localStorage.getItem("courses") || "[]");
+        courses.push({ subject, teacher, classInfo, credit, tables: selectedTables });
+        localStorage.setItem("courses", JSON.stringify(courses));
+
+        document.getElementById("new-subject").value = "";
+        document.getElementById("new-teacher").value = "";
+        document.getElementById("new-class").value = "";
+        document.getElementById("new-credit").value = "";
+        document.querySelectorAll('input[name="table-selection"]').forEach(input => input.checked = false);
+
+        loadData();
+    } else {
+        alert("Please fill all fields correctly!");
+    }
+}
+
+function loadData() {
+    const container = document.getElementById("data-container");
+    container.innerHTML = "";
+    let courses = JSON.parse(localStorage.getItem("courses") || "[]");
+
+    courses.forEach((course, index) => {
+        const newItem = document.createElement("div");
+        newItem.className = "data-item";
+        newItem.innerHTML = `
+            <input type="text" value="${course.subject}" onchange="updateItem(${index}, 'subject', this.value)">
+            <input type="text" value="${course.teacher}" onchange="updateItem(${index}, 'teacher', this.value)">
+            <input type="text" value="${course.classInfo}" onchange="updateItem(${index}, 'classInfo', this.value)">
+            <input type="number" step="0.5" min="0.5" value="${course.credit}" onchange="updateItem(${index}, 'credit', parseFloat(this.value))">
+            <span>Tables: ${course.tables.join(", ")}</span>
+            <button onclick="deleteItem(${index})">Delete</button>
+        `;
+        container.appendChild(newItem);
+    });
+}
+
+function deleteItem(index) {
+    let courses = JSON.parse(localStorage.getItem("courses") || "[]");
+    courses.splice(index, 1);
+    localStorage.setItem("courses", JSON.stringify(courses));
+    loadData();
+}
+
+function generateRandomSchedules() {
+    const numTables = parseInt(document.getElementById("numTables").value);
+    const rows = parseInt(document.getElementById("rows").value);
+    const cols = parseInt(document.getElementById("cols").value);
+    const container = document.getElementById("tableContainer");
+
+    container.innerHTML = ""; // เคลียร์ก่อนสร้างใหม่
+
+    let courses = JSON.parse(localStorage.getItem("courses") || "[]");
+    let schedules = Array(numTables).fill().map(() => []);
+
+    courses.forEach(course => {
+        course.tables.forEach(table => {
+            let tableIndex = table === "all" ? schedules.map((_, i) => i) : [parseInt(table) - 1];
+            tableIndex.forEach(index => {
+                if (schedules[index]) {
+                    let slots = Math.round(course.credit * 2);
+                    for (let i = 0; i < slots; i++) {
+                        schedules[index].push(`${course.subject}<br>${course.teacher}<br>${course.classInfo}`);
+                    }
+                }
+            });
+        });
+    });
+
+    schedules.forEach((scheduleEntries, t) => {
+        scheduleEntries.sort(() => Math.random() - 0.5);
+        let tableHTML = "<table>";
+        tableHTML += `<tr><th>คาบ</th>${Array.from({ length: cols }, (_, c) => `<th>${c + 1}</th>`).join("")}</tr>`;
+        const days = ["เวลา", "จันทร์", "อังคาร", "พุธ", "พฤหัสฯ", "ศุกร์"];
+
+        for (let r = 0; r < rows; r++) {
+            tableHTML += `<tr><th>${days[r] || `Day ${r + 1}`}</th>`;
+            for (let c = 0; c < cols; c++) {
+                let cellKey = `table-${t}-cell-${r}-${c}`;
+                let savedData = localStorage.getItem(cellKey);
+                let isLocked = savedData && savedData.includes("[LOCKED]");
+                let cellContent = isLocked ? savedData.replace("[LOCKED]", "") : scheduleEntries.pop() || "";
+
+                tableHTML += `
+                    <td contenteditable="true"
+                        oninput="updateCell('${cellKey}', this)"
+                        onclick="toggleLock('${cellKey}', this)"
+                        class="${isLocked ? 'locked' : ''}">
+                        ${cellContent}
+                    </td>`;
+            }
+            tableHTML += "</tr>";
+        }
+        tableHTML += "</table><br>";
+        container.innerHTML += tableHTML;
+    });
+}
+
+function toggleLock(cellKey, cell) {
+    let currentData = cell.innerText;
+    if (cell.classList.contains("locked")) {
+        cell.classList.remove("locked");
+        localStorage.setItem(cellKey, currentData);
+    } else {
+        cell.classList.add("locked");
+        localStorage.setItem(cellKey, "[LOCKED]" + currentData);
+    }
+}
+
+function updateCell(cellKey, cell) {
+    let currentData = cell.innerText;
+    let isLocked = cell.classList.contains("locked");
+    localStorage.setItem(cellKey, (isLocked ? "[LOCKED]" : "") + currentData);
+}
+
+window.onload = function () {
+    if (localStorage.getItem("tableData")) {
+        document.getElementById("tableContainer").innerHTML = localStorage.getItem("tableData");
+    }
+};
+
+function updateTableSelection() {
+    const allCheckbox = document.querySelector('input[name="table-selection"][value="all"]');
+    const otherCheckboxes = document.querySelectorAll('input[name="table-selection"]:not([value="all"])');
+
+    if (allCheckbox.checked) {
+        otherCheckboxes.forEach(cb => cb.checked = true);
+    } else {
+        otherCheckboxes.forEach(cb => cb.checked = false);
+    }
+}
+
+function goToSchedulePage() {
+    document.getElementById("courseInfo").style.display = "none";
+    document.getElementById("schedulePage").style.display = "block";
+}
+
+function goToCourseInfoPage() {
+    document.getElementById("courseInfo").style.display = "block";
+    document.getElementById("schedulePage").style.display = "none";
+}
