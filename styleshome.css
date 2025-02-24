@@ -1485,3 +1485,109 @@ textarea.form-input {
     color: white; /* สีค้างเมื่ออยู่ที่หน้านี้ */
     font-weight: bold;
 }
+
+#courseInfo {
+    background: var(--eerie-black2);
+    border: 1px solid var(--jet);
+    border-radius: 12px;
+    box-shadow: var(--shadow2);
+    padding: 20px;
+    margin: 20px 0;
+    color: var(--white2);
+}
+
+#courseInfo h2 {
+    color: var(--orange-yellow-crayola);
+    font-size: var(--fs2);
+    margin-bottom: 15px;
+}
+
+#courseInfo input, 
+#courseInfo button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--jet);
+    border-radius: 8px;
+    background: var(--eerie-black1);
+    color: var(--white2);
+    font-size: var(--fs6);
+}
+
+#courseInfo button {
+    background: var(--orange-yellow-crayola);
+    color: var(--smoky-black);
+    font-weight: var(--fw600);
+    cursor: pointer;
+    transition: var(--transition1);
+}
+
+#courseInfo button:hover {
+    background: var(--vegas-gold);
+}
+
+#courseInfo label {
+    display: block;
+    margin-top: 10px;
+    font-size: var(--fs6);
+}
+
+#courseInfo div {
+    margin-top: 10px;
+}
+
+#data-container {
+    background: var(--onyx);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+#courseInfo div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px; /* ระยะห่างระหว่างองค์ประกอบ */
+}
+
+#courseInfo label {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* ระยะห่างระหว่างกล่องเลือกและข้อความ */
+    cursor: pointer; /* เปลี่ยนเป็นมือชี้ เพื่อให้รู้ว่าสามารถคลิกได้ */
+}
+
+#courseInfo input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--orange-yellow-crayola); /* ใช้สีที่เข้ากับธีม */
+    cursor: pointer;
+}
+#courseInfo button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: var(--orange-yellow-crayola);
+    color: var(--smoky-black);
+    font-size: var(--fs6);
+    font-weight: var(--fw600);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 10px rgba(255, 200, 50, 0.3);
+}
+
+#courseInfo button:hover {
+    background: var(--vegas-gold);
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 15px rgba(255, 200, 50, 0.5);
+}
+
+#courseInfo button:active {
+    background: var(--orange-yellow-crayola);
+    transform: translateY(1px);
+    box-shadow: 0px 2px 5px rgba(255, 200, 50, 0.3);
+}
