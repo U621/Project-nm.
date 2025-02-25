@@ -145,11 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadTitle(); 
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    loadTitle();
-    loadData(); // Ensure data is loaded on page load
-});
-
 function updateTitle() {
     const title = document.getElementById("schedule-title").value.trim();
     document.getElementById("schedule-display-title").textContent = title || "Your Schedule";
@@ -160,7 +155,7 @@ function loadTitle() {
     const titleInput = document.getElementById("schedule-title");
     const titleDisplay = document.getElementById("schedule-display-title");
 
-    if (titleInput && titleDisplay) {
+    if (titleInput && titleDisplay) {  // เช็คว่า element มีอยู่จริง
         const savedTitle = localStorage.getItem("scheduleTitle") || "Your Schedule";
         titleInput.value = savedTitle;
         titleDisplay.textContent = savedTitle;
@@ -191,7 +186,7 @@ function addItem() {
         document.getElementById("new-credit").value = "";
         document.querySelectorAll('input[name="table-selection"]').forEach(input => input.checked = false);
 
-        loadData(); // Refresh the table with the newly added item
+        loadData();
     } else {
         alert("Please fill all fields correctly!");
     }
@@ -217,18 +212,11 @@ function loadData() {
     });
 }
 
-function updateItem(index, field, value) {
-    let courses = JSON.parse(localStorage.getItem("courses") || "[]");
-    courses[index][field] = value;
-    localStorage.setItem("courses", JSON.stringify(courses));
-    loadData(); // Reload the data after the update
-}
-
 function deleteItem(index) {
     let courses = JSON.parse(localStorage.getItem("courses") || "[]");
     courses.splice(index, 1);
     localStorage.setItem("courses", JSON.stringify(courses));
-    loadData(); // Reload the data after deleting an item
+    loadData();
 }
 
 function generateRandomSchedules() {
@@ -246,97 +234,95 @@ function generateRandomSchedules() {
         return;
     }
 
-    let schedules = Array.from({ length: numTables }, () => 
-        Array(rows).fill().map(() => Array(cols).fill(null))
-    );
-
+    let schedules = Array.from({ length: numTables }, () => Array(rows).fill().map(() => Array(cols).fill(null)));
     let usedSlots = Array.from({ length: numTables }, () => 
-        Array.from({ length: rows }, () => Array(cols).fill(false))
-    );  // Track whether a slot has been used
+    Array.from({ length: rows }, () => new Set())
+);
 
-    // Function to get the slot count based on credit
-    function getSlotCount(credit) {
-        if (credit === 0.5) return 1;
-        if (credit === 1) return 2;
-        if (credit === 1.5) return 3;
-        if (credit === 2) return 4;
-        return 1; // fallback
-    }
 
-    // Function to check if a slot can be used (avoid conflicts in the same day)
-    function isValidPlacement(schedule, row, col, slots, course) {
-        if (col + slots > cols) return false; // Prevent going out of bounds
-        for (let i = 0; i < slots; i++) {
-            if (schedule[row][col + i] !== null) return false; // Check if slot is occupied
-        }
+function isValidPlacement(schedule, row, col, course, slots) {
+    
+    if (!usedSlots[row]) return false;
+
+    for (let i = 0; i < slots; i++) {
+        if (col + i >= cols || schedule[row][col + i] !== null) return false;
         
-        // Check for conflicts in the same day (row)
-        for (let r = 0; r < rows; r++) {
-            if (r !== row) {
-                for (let c = 0; c < cols; c++) {
-                    let existingCourse = schedule[r][c];
-                    if (existingCourse !== null) {
-                        if (existingCourse.teacher === course.teacher || existingCourse.classInfo === course.classInfo) {
-                            return false; // Same teacher or class in the same day
-                        }
-                    }
-                }
-            }
-        }
-
-        return true;
+        if (usedSlots[row][col + i] && usedSlots[row][col + i].has(course.subject)) return false;
     }
+    return true;
+}
 
-    // Function to place a course in the schedule
+
+
     function placeCourse(schedule, usedSlots, course) {
-        let slots = getSlotCount(course.credit);
+        let slots = Math.round(course.credit * 2);
         let placed = false;
         let attempts = 0;
         
         while (!placed && attempts < 100) {
             let row = Math.floor(Math.random() * rows);
-            let col = Math.floor(Math.random() * (cols - slots + 1));
-
-            if (!isValidPlacement(schedule, row, col, slots, course)) {
+            let col = Math.floor(Math.random() * cols);
+            
+            if (schedule[row][col] !== null || usedSlots[row].has(course.subject)) {
                 attempts++;
                 continue;
             }
-
-            // Place the course
-            for (let i = 0; i < slots; i++) {
-                schedule[row][col + i] = course;
-                usedSlots[row][col + i] = true;  // Mark the slot as used
+            
+            if (course.credit === 0.5) {
+                schedule[row][col] = course;
+                usedSlots[row].add(course.subject);
+                placed = true;
+            } else if (course.credit === 1) {
+                let secondCol = col + (Math.random() < 0.5 ? 1 : -1);
+                if (secondCol >= 0 && secondCol < cols && schedule[row][secondCol] === null) {
+                    schedule[row][col] = course;
+                    schedule[row][secondCol] = course;
+                    usedSlots[row].add(course.subject);
+                    placed = true;
+                }
+            } else if (course.credit === 1.5) {
+                if (isValidPlacement(schedule, row, col, course, 2)) {
+                    schedule[row][col] = course;
+                    schedule[row][col + 1] = course;
+                    usedSlots[row].add(course.subject);
+                    let secondRow;
+                    do {
+                        secondRow = Math.floor(Math.random() * rows);
+                    } while (secondRow === row || schedule[secondRow][col] !== null);
+                    schedule[secondRow][col] = course;
+                    usedSlots[secondRow].add(course.subject);
+                    placed = true;
+                }
+            } else if (course.credit === 2) {
+                let secondRow, thirdRow;
+                do {
+                    secondRow = Math.floor(Math.random() * rows);
+                    thirdRow = Math.floor(Math.random() * rows);
+                } while (secondRow === row || thirdRow === row || thirdRow === secondRow);
+                schedule[row][col] = course;
+                schedule[secondRow][col] = course;
+                schedule[thirdRow][col] = course;
+                schedule[thirdRow][col + 1] = course;
+                usedSlots[row].add(course.subject);
+                usedSlots[secondRow].add(course.subject);
+                usedSlots[thirdRow].add(course.subject);
+                placed = true;
             }
-            placed = true;
+            attempts++;
         }
     }
 
-    // Loop through each course and place it in the schedule
+    
+    
     courses.forEach(course => {
         course.tables.forEach(table => {
             let tableIndex = table === "all" ? schedules.map((_, i) => i) : [parseInt(table) - 1];
             tableIndex.forEach(index => {
-                if (index < numTables) { // Only place in the valid table index
-                    placeCourse(schedules[index], usedSlots[index], course);
-                }
+                placeCourse(schedules[index], usedSlots[index], course);
             });
         });
     });
 
-    // Ensure no empty slots after placing all courses
-    schedules.forEach(schedule => {
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-                if (schedule[r][c] === null) {
-                    // If slot is empty, fill it with any available course
-                    let availableCourse = courses[Math.floor(Math.random() * courses.length)];
-                    schedule[r][c] = availableCourse;
-                }
-            }
-        }
-    });
-
-    // Render the schedules
     schedules.forEach((schedule, t) => {
         let tableHTML = "<table>";
         tableHTML += `<tr><th>คาบ</th>${Array.from({ length: cols }, (_, c) => `<th>${c + 1}</th>`).join("")}</tr>`;
@@ -348,9 +334,7 @@ function generateRandomSchedules() {
                 let cellKey = `table-${t}-cell-${r}-${c}`;
                 let savedData = localStorage.getItem(cellKey);
                 let isLocked = savedData && savedData.includes("[LOCKED]");
-                let cellContent = isLocked ? savedData.replace("[LOCKED]", "") : (
-                    schedule[r][c] ? `${schedule[r][c].subject}<br>${schedule[r][c].teacher}<br>${schedule[r][c].classInfo}` : ""
-                );
+                let cellContent = isLocked ? savedData.replace("[LOCKED]", "") : (schedule[r][c] ? `${schedule[r][c].subject}<br>${schedule[r][c].teacher}<br>${schedule[r][c].classInfo}` : "");
 
                 tableHTML += `
                     <td contenteditable="true"
@@ -366,11 +350,6 @@ function generateRandomSchedules() {
         container.innerHTML += tableHTML;
     });
 }
-
-
-
-
-
 
 function toggleLock(cellKey, cell) {
     let currentData = cell.innerText;
@@ -388,7 +367,6 @@ function updateCell(cellKey, cell) {
     let isLocked = cell.classList.contains("locked");
     localStorage.setItem(cellKey, (isLocked ? "[LOCKED]" : "") + currentData);
 }
-
 
 window.onload = function () {
     if (localStorage.getItem("tableData")) {
@@ -417,11 +395,3 @@ function goToCourseInfoPage() {
     document.getElementById("schedulePage").style.display = "none";
 }
 
-
-
-
-
-
-
-adjustTableSize();
-window.addEventListener("resize", adjustTableSize);
