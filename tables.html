@@ -129,58 +129,58 @@
                 </section>
 
                 <div id="courseInfo">
-                    <h2>จัดตาราง</h2>
-                    <input type="text" id="new-subject" placeholder="กรอกวิชา">
-                    <input type="text" id="new-teacher" placeholder="กรอกครูผู้สอน">
-                    <input type="text" id="new-class" placeholder="กรอกห้องเรียน">
-                    <input type="number" id="new-credit" step="0.5" min="0.5" placeholder="กรอกหน่วยกิต">
-                    <button id="add-button">เพิ่ม</button>
-                    
-                    <!-- Table Selection -->
-                     <div>
-                    <label>Tables:</label>
-                    <label><input type="checkbox" name="table-selection" value="all" onchange="updateTableSelection()"> ทุกตาราง</label>
-                    <label><input type="checkbox" name="table-selection" value="1"> ตาราง 1</label>
-                    <label><input type="checkbox" name="table-selection" value="2"> ตาราง 2</label>
-                    <label><input type="checkbox" name="table-selection" value="3"> ตาราง 3</label>
-                    <label><input type="checkbox" name="table-selection" value="4"> ตาราง 4</label>
-                    <label><input type="checkbox" name="table-selection" value="5"> ตาราง 5</label>
-                    <label><input type="checkbox" name="table-selection" value="6"> ตาราง 6</label>
-                    </div> 
-            
-                    <div id="data-container"></div>
-            
-                    <button onclick="goToSchedulePage()">ไปที่การสร้างตาราง</button>
-                </div>
-            
-                
-                <!--<a href="/Project End M.6/project table/ม.1/ม.1.html">กลับหน้าแรก</a>
-                <br>
-                <a href="/Project End M.6/project table/ระดับชั้น.html">กลับหน้าหลัก</a>-->
-            
-                <!-- Schedule Page -->
-                <div id="schedulePage" style="display: none;">
-                    <h2>Generate Class Schedules</h2>
-                    <label>Number of Tables:</label>
-                    <input type="number" id="numTables" min="1" value="7"><br><br>
-            
-                    <label>Rows:</label>
-                    <input type="number" id="rows" min="1" value="6"><br><br>
-            
-                    <label>Columns:</label>
-                    <input type="number" id="cols" min="1" value="10"><br><br>
-            
-                    <button onclick="generateRandomSchedules()">Generate Tables</button>
-                    <button onclick="saveTables()">Save Tables</button>
-                    <button onclick="clearTables()">Clear Tables</button>
-            
-                    <div id="tableContainer"></div>
-                    
-                    <button onclick="goToCourseInfoPage()">Back to Course Info</button>
-                </div>
-            
-                <script src="m.1.js"></script>
+        <h2>Course Information</h2>
+        <input type="text" id="new-subject" placeholder="Enter Course">
+        <input type="text" id="new-teacher" placeholder="Enter Teacher">
+        <input type="text" id="new-class" placeholder="Enter Class">
+        <input type="number" id="new-credit" step="0.5" min="0.5" placeholder="Enter Credits">
+        <button onclick="addItem()">Add</button>
+        
+        <div>
+            <label>Tables:</label>
+            <label><input type="checkbox" name="table-selection" value="all" onchange="updateTableSelection()"> All Tables</label>
+            <label><input type="checkbox" name="table-selection" value="1"> Table 1</label>
+            <label><input type="checkbox" name="table-selection" value="2"> Table 2</label>
+            <label><input type="checkbox" name="table-selection" value="3"> Table 3</label>
+            <label><input type="checkbox" name="table-selection" value="4"> Table 4</label>
+            <label><input type="checkbox" name="table-selection" value="5"> Table 5</label>
+            <label><input type="checkbox" name="table-selection" value="6"> Table 6</label>
+        </div>
 
+        <div id="data-container"></div>
+
+        <button onclick="goToSchedulePage()">Go to Schedule Page</button>
+    </div>
+
+    <!-- Table Selection -->
+    
+    
+    <a href="/Project End M.6/project table/ม.4/ม.4.html">กลับหน้าแรก</a>
+    <br>
+    <a href="/Project End M.6/project table/ระดับชั้น.html">กลับหน้าหลัก</a>
+
+    <!-- Schedule Page -->
+    <div id="schedulePage" style="display: none;">
+        <h2>Generate Class Schedules</h2>
+        <label>Number of Tables:</label>
+        <input type="number" id="numTables" min="1" value="7"><br><br>
+
+        <label>Rows:</label>
+        <input type="number" id="rows" min="1" value="6"><br><br>
+
+        <label>Columns:</label>
+        <input type="number" id="cols" min="1" value="10"><br><br>
+
+        <button onclick="generateRandomSchedules()">Generate Tables</button>
+        <button onclick="saveTables()">Save Tables</button>
+        <button onclick="clearTables()">Clear Tables</button>
+
+        <div id="tableContainer"></div>
+        
+        <button onclick="goToCourseInfoPage()">Back to Course Info</button>
+    </div>
+
+    <script src="m.4.js"></script>
     <script src="scripthome.js"></script>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
