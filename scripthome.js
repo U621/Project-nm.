@@ -593,3 +593,18 @@ function goToCourseInfoPage() {
     document.getElementById("courseInfo").style.display = "block";
     document.getElementById("schedulePage").style.display = "none";
 }
+
+function adjustTableSize() {
+    const tables = document.querySelectorAll(".about.active table");
+    tables.forEach(table => {
+        const container = table.closest(".about.active .table-container");
+        if (container && container.clientWidth < table.scrollWidth) {
+            table.style.width = "100%";
+        } else {
+            table.style.width = "auto";
+        }
+    });
+}
+
+adjustTableSize();
+window.addEventListener("resize", adjustTableSize);
