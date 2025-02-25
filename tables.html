@@ -157,11 +157,31 @@
 
             <div id="data-container"></div>
 
+
+                    <h2>การสร้างตาราง</h2>
+                <div class="table-controls">
+                    <div class="table-inputs">
+                        <label>จำนวนตารางที่ต้องการสร้าง: (ตอนนี้จำกัดไว้แค่ 1 ตาราง)</label>
+                        <input type="number" id="numTables" min="1" value="1">
+        
+                        <label>แถวของตาราง:</label>
+                        <input type="number" id="rows" min="1" value="6">
+        
+                        <label>คอลัมม์ของตาราง:</label>
+                        <input type="number" id="cols" min="1" value="10">
+                    </div>
+        
+                <div class="table-buttons">
+                    <button onclick="generateRandomSchedules()">สร้างตาราง</button>
+                    <button onclick="saveTables()">บันทึกข้อมูลตาราง (ยังไม่สามารถใช้งานได้)</button>
+                    <button onclick="clearTables()">เคลียร์ข้อมูลตาราง (ยังไม่สามารถใช้งานได้)</button>
+                </div>
+
             <button onclick="goToSchedulePage()">ไปที่การสร้างตาราง</button>
         </div>
 
         <!-- Schedule Page -->
-        <div id="schedulePage" style="display: none;">
+        <!--<div id="schedulePage" style="display: none;">
             <h2>การสร้างตาราง</h2>
                 <div class="table-controls">
                     <div class="table-inputs">
@@ -180,7 +200,7 @@
                     <button onclick="saveTables()">บันทึกข้อมูลตาราง (ยังไม่สามารถใช้งานได้)</button>
                     <button onclick="clearTables()">เคลียร์ข้อมูลตาราง (ยังไม่สามารถใช้งานได้)</button>
                 </div>
-        </div>
+        </div>-->
         
         <p>การสุ่มยังคงมีปัญหาเนื่องจากการกำหนดหน่วยกิตของวิชา ผู้จัดทำจึงต้องขออภัยมา ณ ทีนี้</p>
 
