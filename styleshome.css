@@ -1591,3 +1591,136 @@ textarea.form-input {
     transform: translateY(1px);
     box-shadow: 0px 2px 5px rgba(255, 200, 50, 0.3);
 }
+
+
+/* สไตล์ใหม่สำหรับ Course Information และ Generate Class Schedules */
+#courseInfo, #schedulePage {
+    background: var(--eerie-black2);
+    border: 1px solid var(--jet);
+    border-radius: 12px;
+    box-shadow: var(--shadow2);
+    padding: 20px;
+    margin: 20px 0;
+    color: var(--white2);
+    text-align: center;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#courseInfo h2, #schedulePage h2 {
+    color: var(--orange-yellow-crayola);
+    font-size: var(--fs2);
+    margin-bottom: 15px;
+}
+
+#courseInfo input, #schedulePage input, #courseInfo button, #schedulePage button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--jet);
+    border-radius: 8px;
+    background: var(--eerie-black1);
+    color: var(--white2);
+    font-size: var(--fs6);
+}
+
+#courseInfo button, #schedulePage button {
+    background: var(--orange-yellow-crayola);
+    color: var(--smoky-black);
+    font-weight: var(--fw600);
+    cursor: pointer;
+    transition: var(--transition1);
+    box-shadow: 0px 4px 10px rgba(255, 200, 50, 0.3);
+}
+
+#courseInfo button:hover, #schedulePage button:hover {
+    background: var(--vegas-gold);
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 15px rgba(255, 200, 50, 0.5);
+}
+
+#courseInfo button:active, #schedulePage button:active {
+    background: var(--orange-yellow-crayola);
+    transform: translateY(1px);
+    box-shadow: 0px 2px 5px rgba(255, 200, 50, 0.3);
+}
+
+#courseInfo div, #schedulePage div {
+    margin-top: 10px;
+}
+
+#data-container {
+    background: var(--onyx);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 15px;
+    overflow-x: auto;
+}
+
+#courseInfo label, #schedulePage label {
+    display: block;
+    margin-top: 10px;
+    font-size: var(--fs6);
+}
+
+#courseInfo input[type="checkbox"], #schedulePage input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--orange-yellow-crayola);
+    cursor: pointer;
+}
+
+/* ปรับขนาดและให้ตารางพอดีกับ .about.active */
+.about.active .table-container {
+    width: 100%;
+    max-width: 900px;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: auto;
+}
+
+.about.active table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 850px;
+    margin-bottom: 20px;
+    background: var(--eerie-black2);
+    border-radius: 8px;
+    box-shadow: var(--shadow2);
+    overflow: hidden;
+    text-align: center;
+}
+
+.about.active th, .about.active td {
+    border: 1px solid var(--jet);
+    padding: 8px;
+    color: var(--white2);
+    min-width: 60px;
+    font-size: var(--fs7);
+}
+
+.about.active th {
+    background: var(--orange-yellow-crayola);
+    color: var(--smoky-black);
+    font-weight: var(--fw600);
+}
+
+.data-item {
+    margin-bottom: 10px;
+}
+
+.title-container {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: var(--fs2);
+    color: var(--orange-yellow-crayola);
+}
+
+.locked {
+    background-color: #000000;
+    font-weight: bold;
+}
