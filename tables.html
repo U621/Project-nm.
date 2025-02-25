@@ -103,57 +103,83 @@
             </div>-->
         </aside>
 
-        <div id="courseInfo">
-        <h2>Course Information</h2>
-        <input type="text" id="new-subject" placeholder="Enter Course">
-        <input type="text" id="new-teacher" placeholder="Enter Teacher">
-        <input type="text" id="new-class" placeholder="Enter Class">
-        <input type="number" id="new-credit" step="0.5" min="0.5" placeholder="Enter Credits">
-        <button onclick="addItem()">Add</button>
+        <div class="main-content">
+            <nav class="navbar">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><button class="navbar-link active" data-nav-link><a href="home.html">หน้าแรก</a></button></li>
+                    <li class="navbar-item"><button class="navbar-link" data-nav-link>จัดตารางเรียนตารางสอน</button></li>
+                    <li class="navbar-item"><button class="navbar-link" data-nav-link>ครูผู้สอน</button></li>
+                    <li class="navbar-item"><button class="navbar-link" data-nav-link>วิชาที่มีสอน</button></li>
+                    <li class="navbar-item"><button class="navbar-link" data-nav-link>ระดับชั้น</button></li>
+                    <a href=""></a>
+                </ul>
+            </nav>
+
+            <article class="about active" data-page="about">
+                <header>
+                    <h2 class="h2 article-title">หน้าแรก</h2>
+                </header>
+
+                <section class="about-text">
+                    <p>
+                        </p>
+                    <p>จากที่กล่าวมาข้างต้น ทางผู้จัดทำจึงได้มีแนวคิดในการพัฒนาโปรแกรมจัดตารางเรียนตารางสอนอัตโนมัติ เพื่อทำให้ลดระยะเวลาในการทำตารางเรียนตารางสอน และสามารถใช้งาน
+                        ได้จริง สะดวก รวดเร็ว
+                        </p>
+                </section>
+
+                <div id="courseInfo">
+                    <h2>กรอกข้อมูลตาราง</h2>
+                    <p>ข้อมูลที่กรอกอาจจะยังไม่แสดงเนื่องจากปัญหาการแสดงผลข้อมูล</p>
+                    <br>
+                    <input type="text" id="new-subject" placeholder="กรอกรายวิชา">
+                    <input type="text" id="new-teacher" placeholder="กรอกครูผู้สอน">
+                    <input type="text" id="new-class" placeholder="กรอกห้องเรียน">
+                    <input type="number" id="new-credit" step="0.5" min="0.5" placeholder="กรอกหน่วยกิต">
+                    <button onclick="addItem()">เพิ่มข้อมูล</button>
         
-        <div>
-            <label>Tables:</label>
-            <label><input type="checkbox" name="table-selection" value="all" onchange="updateTableSelection()"> All Tables</label>
-            <label><input type="checkbox" name="table-selection" value="1"> Table 1</label>
-            <label><input type="checkbox" name="table-selection" value="2"> Table 2</label>
-            <label><input type="checkbox" name="table-selection" value="3"> Table 3</label>
-            <label><input type="checkbox" name="table-selection" value="4"> Table 4</label>
-            <label><input type="checkbox" name="table-selection" value="5"> Table 5</label>
-            <label><input type="checkbox" name="table-selection" value="6"> Table 6</label>
+                <div>
+                    <label>เลือกตาราง:</label>
+                        <!--<label><input type="checkbox" name="table-selection" value="all" onchange="updateTableSelection()"> All Tables</label>-->
+                        <label><input type="checkbox" name="table-selection" value="1"> ตารางที่ 1</label>
+                        <!--<label><input type="checkbox" name="table-selection" value="2"> Table 2</label>
+                        <label><input type="checkbox" name="table-selection" value="3"> Table 3</label>
+                        <label><input type="checkbox" name="table-selection" value="4"> Table 4</label>
+                        <label><input type="checkbox" name="table-selection" value="5"> Table 5</label>
+                        <label><input type="checkbox" name="table-selection" value="6"> Table 6</label>-->
+                </div>
+
+            <div id="data-container"></div>
+
+            <button onclick="goToSchedulePage()">ไปที่การสร้างตาราง</button>
         </div>
 
-        <div id="data-container"></div>
-
-        <button onclick="goToSchedulePage()">Go to Schedule Page</button>
-    </div>
-
-    <!-- Table Selection -->
-    
-    
-    <a href="/Project End M.6/project table/ม.4/ม.4.html">กลับหน้าแรก</a>
-    <br>
-    <a href="/Project End M.6/project table/ระดับชั้น.html">กลับหน้าหลัก</a>
-
-    <!-- Schedule Page -->
-    <div id="schedulePage" style="display: none;">
-        <h2>Generate Class Schedules</h2>
-        <label>Number of Tables:</label>
-        <input type="number" id="numTables" min="1" value="1"><br><br>
-
-        <label>Rows:</label>
-        <input type="number" id="rows" min="1" value="6"><br><br>
-
-        <label>Columns:</label>
-        <input type="number" id="cols" min="1" value="10"><br><br>
-
-        <button onclick="generateRandomSchedules()">Generate Tables</button>
-        <button onclick="saveTables()">Save Tables</button>
-        <button onclick="clearTables()">Clear Tables</button>
-
-        <div id="tableContainer"></div>
+        <!-- Schedule Page -->
+        <div id="schedulePage" style="display: none;">
+            <h2>การสร้างตาราง</h2>
+                <div class="table-controls">
+                    <div class="table-inputs">
+                        <label>จำนวนตารางที่ต้องการสร้าง: (ตอนนี้จำกัดไว้แค่ 1 ตาราง)</label>
+                        <input type="number" id="numTables" min="1" value="1">
         
-        <button onclick="goToCourseInfoPage()">Back to Course Info</button>
-    </div>
+                        <label>แถวของตาราง:</label>
+                        <input type="number" id="rows" min="1" value="6">
+        
+                        <label>คอลัมม์ของตาราง:</label>
+                        <input type="number" id="cols" min="1" value="10">
+                    </div>
+        
+                <div class="table-buttons">
+                    <button onclick="generateRandomSchedules()">สร้างตาราง</button>
+                    <button onclick="saveTables()">บันทึกข้อมูลตาราง (ยังไม่สามารถใช้งานได้)</button>
+                    <button onclick="clearTables()">เคลียร์ข้อมูลตาราง (ยังไม่สามารถใช้งานได้)</button>
+                </div>
+        </div>
+
+            <div id="tableContainer"></div>
+        
+                <button onclick="goToCourseInfoPage()">กลับที่หน้าการกรอกข้อมูล</button>
+        </div>
 
     <script src="scripthome.js"></script>
 
