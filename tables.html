@@ -104,45 +104,51 @@
         </aside>
 
         <div id="courseInfo">
-        <h2>การสร้างตาราง</h2>
-        <input type="text" id="new-subject" placeholder="กรอกรายวิชา">
-        <input type="text" id="new-teacher" placeholder="กรอกครูผู้สอน">
-        <input type="text" id="new-class" placeholder="กรอกห้องเรียน">
-        <input type="number" id="new-credit" step="0.5" min="0.5" placeholder="กรอกหน่วยกิต">
-        <button id="add-button">Add</button>
+        <h2>Course Information</h2>
+        <input type="text" id="new-subject" placeholder="Enter Course">
+        <input type="text" id="new-teacher" placeholder="Enter Teacher">
+        <input type="text" id="new-class" placeholder="Enter Class">
+        <input type="number" id="new-credit" step="0.5" min="0.5" placeholder="Enter Credits">
+        <button onclick="addItem()">Add</button>
         
-        <!-- Table Selection -->
-         <div>
-        <label>Tables:</label>
-        <label><input type="checkbox" name="table-selection" value="all" onchange="updateTableSelection()"> ทุกตาราง</label>
-        <label><input type="checkbox" name="table-selection" value="1"> ตารางที่ 1</label>
-        <!--<label><input type="checkbox" name="table-selection" value="2"> Table 2</label>
-        <label><input type="checkbox" name="table-selection" value="3"> Table 3</label>
-        <label><input type="checkbox" name="table-selection" value="4"> Table 4</label>
-        <label><input type="checkbox" name="table-selection" value="5"> Table 5</label>
-        <label><input type="checkbox" name="table-selection" value="6"> Table 6</label>-->
-        </div> 
+        <div>
+            <label>Tables:</label>
+            <label><input type="checkbox" name="table-selection" value="all" onchange="updateTableSelection()"> All Tables</label>
+            <label><input type="checkbox" name="table-selection" value="1"> Table 1</label>
+            <label><input type="checkbox" name="table-selection" value="2"> Table 2</label>
+            <label><input type="checkbox" name="table-selection" value="3"> Table 3</label>
+            <label><input type="checkbox" name="table-selection" value="4"> Table 4</label>
+            <label><input type="checkbox" name="table-selection" value="5"> Table 5</label>
+            <label><input type="checkbox" name="table-selection" value="6"> Table 6</label>
+        </div>
 
         <div id="data-container"></div>
 
-        <button onclick="goToSchedulePage()">ไปที่การสร้างตาราง</button>
+        <button onclick="goToSchedulePage()">Go to Schedule Page</button>
     </div>
+
+    <!-- Table Selection -->
+    
+    
+    <a href="/Project End M.6/project table/ม.4/ม.4.html">กลับหน้าแรก</a>
+    <br>
+    <a href="/Project End M.6/project table/ระดับชั้น.html">กลับหน้าหลัก</a>
 
     <!-- Schedule Page -->
     <div id="schedulePage" style="display: none;">
-        <h2>การสร้างตาราง</h2>
-        <label>เลือกจำนวนตาราง:</label>
-        <input type="number" id="numTables" min="1" value="1"><br><br>
+        <h2>Generate Class Schedules</h2>
+        <label>Number of Tables:</label>
+        <input type="number" id="numTables" min="1" value="7"><br><br>
 
-        <label>แถวของตาราง:</label>
+        <label>Rows:</label>
         <input type="number" id="rows" min="1" value="6"><br><br>
 
-        <label>คอลัมม์ของตาราง:</label>
+        <label>Columns:</label>
         <input type="number" id="cols" min="1" value="10"><br><br>
 
-        <button onclick="generateRandomSchedules()">สร้างตาราง</button>
-        <button onclick="saveTables()">บันทึกตาราง</button>
-        <button onclick="clearTables()">เคลียร์ตาราง</button>
+        <button onclick="generateRandomSchedules()">Generate Tables</button>
+        <button onclick="saveTables()">Save Tables</button>
+        <button onclick="clearTables()">Clear Tables</button>
 
         <div id="tableContainer"></div>
         
