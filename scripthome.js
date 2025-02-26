@@ -230,7 +230,7 @@ function generateRandomSchedules() {
 
     let courses = JSON.parse(localStorage.getItem("courses") || "[]");
     if (courses.length === 0) {
-        alert("No courses available to generate schedules.");
+        alert("ไม่มีหลักสูตรที่สามารถสร้างตารางเวลาได้");
         return;
     }
 
